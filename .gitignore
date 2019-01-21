@@ -53,4 +53,8 @@ Mkfile.old
 dkms.conf
 
 *.sqlite3
+.env
+
+.vscode
+
 
