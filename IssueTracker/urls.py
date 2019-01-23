@@ -27,6 +27,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name="index"),
     path('accounts/', include(accounts_urls)),
-    path('posts/', include('posts.urls')),
-    url(r'^media/(?<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
+    path('posts/', include('blogposts.urls')),
+    url(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
 ]
