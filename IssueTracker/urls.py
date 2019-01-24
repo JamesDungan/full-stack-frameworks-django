@@ -19,6 +19,8 @@ from django.conf.urls import url
 from django.contrib import admin
 from home.views import index
 from accounts import urls as accounts_urls
+from blogposts import urls as blogposts_urls
+from tickets import urls as tickets_urls
 from django.views.generic import RedirectView
 from django.views.static import serve
 from .settings import MEDIA_ROOT
@@ -27,6 +29,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name="index"),
     path('accounts/', include(accounts_urls)),
-    path('posts/', include('blogposts.urls')),
+    path('posts/', include(blogposts_urls)),
+    path('tickets/', include(tickets_urls)),
     url(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
 ]

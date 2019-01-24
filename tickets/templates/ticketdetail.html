@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row">
+        <div class="ticket-title col-md-2 col-sm-3 text-center">
+            <p>{{ticket.title}}</p>
+        </div>
+        <div class="ticket-created_date col-md-2 col-sm-3 text-center">
+            <p>{{ticket.created_date}}</p>
+        </div>
+        <div class="ticket-created_by col-md-2 col-sm-3 text-center">
+            <p>{{ticket.created_by}}</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="ticket-text col-sm-12 text-center">
+            <p>{{ticket.text}}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-9">
+            <p><span class="boldtext">Votes: </span>{{ ticket.votes }}</p>
+            <p><span class="boldtext">Type: </span>{{ ticket.ticket_type }}</p>
+            <p><span class="boldtext">Status: </span>{{ ticket.status }}</p>
+            <a href="{% url 'tickets' %}" class="btn btn-default">Back to Tickets</a>
+            <hr>
+        </div>
+        <div class="col-xs-9">
+            {% if post.comment_set.all %}
+                <h2>Comments</h2>
+                <div class="comments">
+                    {% for comment in post.comment_set.all %}
+                        <span>
+                            <p>{{ comment.author }}</p> said on {{ comment.created_date }}
+                        </span>
+                        <p>
+                            {{ comment.text }}
+                        </p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}
