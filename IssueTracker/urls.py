@@ -17,7 +17,7 @@ Including another URLconf
 from django.urls import path, include
 from django.conf.urls import url
 from django.contrib import admin
-from accounts.views import index
+from home.views import index
 from accounts import urls as accounts_urls
 from django.views.generic import RedirectView
 from django.views.static import serve

@@ -4,9 +4,6 @@ from accounts.forms import UserLoginForm, UserRegistrationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
-def index(request):
-    return render(request, 'index.html')
-
 def login(request):
     if request.user.is_authenticated:
         return redirect(reverse('index'))

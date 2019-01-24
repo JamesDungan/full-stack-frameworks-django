@@ -60,4 +60,6 @@ dkms.conf
 *.pyo
 *.pyc
 
+venv
+
 
