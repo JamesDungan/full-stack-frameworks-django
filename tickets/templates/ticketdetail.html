@@ -1,4 +1,7 @@
 {% extends 'base.html' %}
+{% load static from staticfiles %}
+{% load bootstrap_tags %}
+
 {% block content %}
     <div class="row">
         <div class="ticket-title col-md-2 col-sm-3 text-center">
@@ -24,14 +27,16 @@
             <p><span class="boldtext">Status: </span>{{ ticket.status }}</p>
             <a href="{% url 'tickets' %}" class="btn btn-default">Back to Tickets</a>
             <hr>
+            <a href="{% url 'edit_ticket' ticket.id %}" class="btn btn-default">Edit this Ticket</a>
+            <hr>
         </div>
         <div class="col-xs-9">
-            {% if post.comment_set.all %}
+            {% if ticket.comment_set.all %}
                 <h2>Comments</h2>
                 <div class="comments">
-                    {% for comment in post.comment_set.all %}
+                    {% for comment in ticket.comment_set.all %}
                         <span>
-                            <p>{{ comment.author }}</p> said on {{ comment.created_date }}
+                            <p>{{ comment.author }} said on {{ comment.created_date }}</p>
                         </span>
                         <p>
                             {{ comment.text }}
@@ -40,6 +45,17 @@
                 </div>
             {% endif %}
         </div>
+    </div>
+    <div class="row">
+        <form role="form" method="post" id="payment-form" action="{% url 'ticket_detail' ticket.id %}">
+        <div class="form-group col-md-6">
+            {{ form | as_bootstrap }}
+        </div>    
+            {% csrf_token %}
+        <div class="form-group col-md-12">
+            <input class=" btn btn-primary" id="submit_payment_btn" name="comment" type="submit" value="Comment">
+        </div>
+        </form>
     </div>
 
 {% endblock %}

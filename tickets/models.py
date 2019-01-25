@@ -3,19 +3,19 @@ from django.utils import timezone
 
 class Ticket(models.Model):
 
-    FEATURE = 'F'
-    BUG = 'B' 
+    FEATURE = 'Feature'
+    BUG = 'Bug' 
     TICKET_TYPE_CHOICES = (
         (FEATURE, 'Feature'),
         (BUG, 'Bug')
     )
-    TO_DO = 'to_do'
-    DOING = 'doing'
-    DONE = 'done'
+    TO_DO = 'To Do'
+    DOING = 'Doing'
+    DONE = 'Done'
     STATUS_CHOICES = (
-        (TO_DO,'to_do'),
-        (DOING,'doing'),
-        (DONE,'done')
+        (TO_DO,'To Do'),
+        (DOING,'Doing'),
+        (DONE,'Done')
     )
 
     title = models.CharField(max_length=254, default='')
