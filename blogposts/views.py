@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
+from django.contrib.auth.decorators import user_passes_test, login_required
 from .models import Post
 from .forms import BlogPostForm
 
@@ -13,6 +14,7 @@ def post_detail(request, pk):
     post.save()
     return render(request, 'postdetail.html', {'post': post})
 
+@user_passes_test(lambda u: u.is_superuser)
 def create_or_edit_post(request, pk=None):
     post = get_object_or_404(Post, pk=pk) if pk else None
     if request.method == "POST":

@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
 {% load bootstrap_tags %}
+{% block page_title %}Create or Edit Blog post{% endblock %}
 {% block content %}
 
-    <h1>New Post</h1>
+    {% if form.title.value is None %}
+        <h3>New Post</h3>
+    {% endif %}
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form | as_bootstrap }}
