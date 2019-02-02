@@ -29,3 +29,18 @@ def create_or_edit_ticket(request, pk=None):
         form = TicketForm(instance=ticket)
     return render(request, 'ticketform.html', {'form': form})  
 
+def upvote(request, pk):
+    ticket = get_object_or_404(Ticket, pk=pk)
+    ticket.votes += 1
+    ticket.save()
+    
+    referring_page = request.META['HTTP_REFERER']
+    path_list = referring_page.split('/')
+    penultimate_index = len(path_list)-2 
+        
+    if path_list[penultimate_index].isnumeric():
+        return redirect(ticket_detail, ticket.pk )
+    else:
+        return redirect(all_tickets)
+    
+                                                 

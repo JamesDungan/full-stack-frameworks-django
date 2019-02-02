@@ -35,3 +35,4 @@ class Comment(models.Model):
     author = models.CharField(max_length=254, default='')
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
 
+

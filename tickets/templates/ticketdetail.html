@@ -23,6 +23,7 @@
     <div class="row">
         <div class="col-xs-9">
             <p><span class="boldtext">Votes: </span>{{ ticket.votes }}</p>
+            <a href="{% url 'upvote_ticket' ticket.id %}"class="btn btn-default btn-sm">Upvote</a>
             <p><span class="boldtext">Type: </span>{{ ticket.ticket_type }}</p>
             <p><span class="boldtext">Status: </span>{{ ticket.status }}</p>
             <a href="{% url 'tickets' %}" class="btn btn-default">Back to Tickets</a>
