@@ -36,10 +36,12 @@ class Comment(models.Model):
     author = models.CharField(max_length=254, default='')
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
 
-
 class Vote(models.Model):
     username = models.CharField(max_length=150)
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = (("username", "ticket"),)
 
 
 
