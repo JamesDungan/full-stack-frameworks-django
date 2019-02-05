@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 class Ticket(models.Model):
 
@@ -34,5 +35,13 @@ class Comment(models.Model):
     created_date = models.DateTimeField(default=timezone.now)
     author = models.CharField(max_length=254, default='')
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
+
+
+class Vote(models.Model):
+    username = models.CharField(max_length=150)
+    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
+
+
+
 
 
