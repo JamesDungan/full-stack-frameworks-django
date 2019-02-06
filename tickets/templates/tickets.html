@@ -1,14 +1,22 @@
 {% extends 'base.html' %}
+{% load app_tags %}
+
 {% block content %}
 <div class="row row-flex">
     {% for ticket in tickets %}
+    {% user_voted_tag ticket user.username as voted %}
     <div class="col-xs-10 col-xs-offset-1 col-sm-offset-0 col-sm-6 col-md-4 display panel panel-default">
         <h3>{{ ticket.title }}</h3>
         <p class="ticket-description">{{ ticket.text | truncatewords:30 }}</p>
         <div class="row row-flex">
             <div class="col-xs-10 col-xs-offset-1 col-sm-offset-0 col-sm-6 col-md-4">
                 <p><span class="boldtext">Votes: </span>{{ ticket.votes }}</p>
-                <a href="{% url 'upvote_ticket' ticket.id %}"class="btn btn-default btn-sm upvote">Upvote</a>
+                {% if voted %}    
+                    <a href="" class="btn btn-default btn-sm upvote disabled">Upvote</a>
+                {% else %}
+                    <a href="{% url 'upvote_ticket' ticket.id %}"class="btn btn-default btn-sm upvote">Upvote</a>
+                {% endif %}
+
             </div>
             <div class="col-xs-10 col-xs-offset-1 col-sm-offset-0 col-sm-6 col-md-4">
                 <p><span class="boldtext">Type: </span>{{ ticket.ticket_type }}</p>

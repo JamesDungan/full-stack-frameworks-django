@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 {% load static from staticfiles %}
 {% load bootstrap_tags %}
+{% load app_tags %}
 
 {% block content %}
+{% user_voted_tag ticket user.username as voted %}
     <div class="row">
         <div class="ticket-title col-md-2 col-sm-3 text-center">
             <p>{{ticket.title}}</p>
@@ -23,9 +25,16 @@
     <div class="row">
         <div class="col-xs-9">
             <p><span class="boldtext">Votes: </span>{{ ticket.votes }}</p>
-            <a href="{% url 'upvote_ticket' ticket.id %}"class="btn btn-default btn-sm">Upvote</a>
+            {% if voted %}    
+                <a href="" class="btn btn-default btn-sm upvote disabled">Upvote</a>
+            {% else %}
+                <a href="{% url 'upvote_ticket' ticket.id %}"class="btn btn-default btn-sm upvote">Upvote</a>
+            {% endif %}
+            
             <p><span class="boldtext">Type: </span>{{ ticket.ticket_type }}</p>
             <p><span class="boldtext">Status: </span>{{ ticket.status }}</p>
+
+
             <a href="{% url 'tickets' %}" class="btn btn-default">Back to Tickets</a>
             <hr>
             <a href="{% url 'edit_ticket' ticket.id %}" class="btn btn-default">Edit this Ticket</a>
