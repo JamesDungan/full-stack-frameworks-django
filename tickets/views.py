@@ -2,7 +2,6 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Ticket, Comment, Vote
 from .forms import TicketForm, CommentForm
 from django.contrib.auth.models import User
-from django.db import IntegrityError
 
 def all_tickets(request):
     tickets = Ticket.objects.all()
@@ -39,20 +38,11 @@ def upvote(request, pk):
     user = User.objects.get(username=request.user.username)
     ticket = get_object_or_404(Ticket, pk=pk)
     vote = Vote(username=user, ticket=ticket)
-    
-    try:
-        vote.save()
-    except IntegrityError as ie:
-        if path_list[penultimate_index].isnumeric():
-            return redirect(ticket_detail, ticket.pk )
-        else:
-            return redirect(all_tickets)
+    vote.save()
         
     ticket.votes += 1
     ticket.save()
-    
- 
-        
+
     if path_list[penultimate_index].isnumeric():
         return redirect(ticket_detail, ticket.pk )
     else:
