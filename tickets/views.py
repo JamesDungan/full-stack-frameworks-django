@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Ticket, Comment, Vote
+from payments.views import payments
 from .forms import TicketForm, CommentForm
 from django.contrib.auth.models import User
 
@@ -37,15 +38,21 @@ def upvote(request, pk):
 
     user = User.objects.get(username=request.user.username)
     ticket = get_object_or_404(Ticket, pk=pk)
+    
     vote = Vote(username=user, ticket=ticket)
     vote.save()
-        
     ticket.votes += 1
     ticket.save()
+    
+    if ticket.ticket_type == 'Feature':
+        return redirect(payments)
 
     if path_list[penultimate_index].isnumeric():
         return redirect(ticket_detail, ticket.pk )
     else:
         return redirect(all_tickets)
+
+
+
     
                                                  

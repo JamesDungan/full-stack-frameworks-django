@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+
+{% block content %}
+<div class="jumbotron">
+    <h1>Feature Upvote</h1>
+    <p>You seem to agree that this is a worthwhile feature. Thats Excellent!</p>
+    <p>In order to vote on this feature, please make a payment of €5 using our secure payment system</p>
+    <p>We promise to always spend at least 50% of our time working on developing the highest-paid feature</p>
+    
+    <form action="{% url 'charge' %}" method="post">
+        {% csrf_token %}
+        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+        data-key="{{ key }}"
+        data-description="Feature Vote Payment"
+        data-amount="500"
+        data-locale="auto">
+        </script>
+    </form>
+
+    <p><a class="btn btn-primary btn-lg" href="{% url 'tickets' %}" role="button">Cancel</a></p>
+  </div>
+{% endblock %}

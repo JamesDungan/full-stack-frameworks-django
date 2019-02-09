@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'accounts',
     'blogposts',
     'tickets',
+    'payments',
 ]
 
 MIDDLEWARE = [
@@ -141,3 +142,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = os.environ.get('EMAIL_ADDRESS')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 EMAIL_PORT = 587
+
+# TEST KEYS
+STRIPE_SECRET_KEY = 'sk_test_INBvSfGETyHx3Lo3TZg2DFQk'
+STRIPE_PUBLISHABLE_KEY = 'pk_test_L17qrs0fEw4SBTmZfJ88usiD'
