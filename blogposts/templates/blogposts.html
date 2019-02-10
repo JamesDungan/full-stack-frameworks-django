@@ -1,12 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
+    {% if user.is_staff %}
+        <div>
+            <a href="{% url 'new_post' %}">Create</a>
+        </div>
+    {% endif %}
     {% for post in posts %}
         <div class="row">
             <div class="col-md-2 col-sm-3 text-center">
-                <a class ="story-img" href="#">
-                    <img src="/media.img/profile.jpg" class=img-circle>
-                </a>
-                <p><span class="boldtext">Author:</span> JD</p>
+                <p><span class="boldtext">Author:</span> {{post.author}}</p>
             </div>
             <div class="col-md-10 col-sm-9">
                 <h3>
