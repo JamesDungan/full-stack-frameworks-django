@@ -1,22 +1,24 @@
 import stripe
-
 from django.shortcuts import render
 from django.conf import settings
-from IssueTracker.globe import vote
-from django.views.generic.base import TemplateView
+from services import vote_service
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 def payments(request):
     key = settings.STRIPE_PUBLISHABLE_KEY
-    return render(request, 'payments.html', {'key':key})
+    ticket = vote_service.get_ticket(request)
+    return render(request, 'payments.html', {'key':key, 'ticket':ticket})
 
 def charge(request):
     if request.method == 'POST':
+        ticket_id =  request.session['ticket']
+
         charge = stripe.Charge.create(
             amount=500,
             currency='eur',
             description='A Django charge',
             source=request.POST['stripeToken']
         )
-        return render(request, 'charge.html')
+        ticket = vote_service.vote(request)
+        return render(request, 'charge.html', {'ticket':ticket})

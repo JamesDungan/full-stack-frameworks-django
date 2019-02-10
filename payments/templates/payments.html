@@ -12,7 +12,7 @@
         {% csrf_token %}
         <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
         data-key="{{ key }}"
-        data-description="Feature Vote Payment"
+        data-description="Upvote payment for feature: {{ticket.title}}"
         data-amount="500"
         data-locale="auto">
         </script>

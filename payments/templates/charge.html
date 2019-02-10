@@ -2,11 +2,9 @@
 {% load static from staticfiles %}
 
 {% block content %}
-    
-
     <div class="jumbotron">
-        <h2>Thanks, you paid <strong>€5.00</strong>!</h2>
-    
+        <h2>Thanks!!</h2>
+        <p>You paid <strong>€5.00</strong> to upvote this feature: {{ticket.title}}</p>    
         <p><a class="btn btn-primary btn-lg" href="{% url 'tickets' %}" role="button">Back to tickets</a></p>
       </div>
 {% endblock %}
