@@ -23,7 +23,7 @@ class Ticket(models.Model):
     created_date = models.DateTimeField(default=timezone.now)
     votes = models.IntegerField(default=0)
     ticket_type = models.CharField(max_length=10, choices=TICKET_TYPE_CHOICES)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='To Do')
     created_by = models.CharField(max_length=254, default='')
 
     def __str__(self):

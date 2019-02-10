@@ -1,3 +1,27 @@
-form{
+/* form{
     width:50%;
+} */
+
+.footer-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+}
+.ticket-footer-link{
+    grid-column: 1/3;
+}
+
+ .create-ticket-button{
+    margin-top: 1rem;
+}
+.ticket-footer-label, .ticket-footer-info{
+    margin: 0.2rem 0px;
+}
+
+.read-more{
+    color: #9B6EF3;
+    border-color: #FF8650;
+}
+.read-more:hover{
+    background-color: #9B6EF3;
+    border-color: #FF8650;
 }

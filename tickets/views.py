@@ -16,6 +16,7 @@ def ticket_detail(request, pk):
         if form.is_valid():
            comment = form.save(commit=False)
            comment.ticket_id = ticket.id
+           comment.author = request.user.username
            comment.save()
     else:
         form = CommentForm()
@@ -26,7 +27,9 @@ def create_or_edit_ticket(request, pk=None):
     if request.method == "POST":
         form = TicketForm(request.POST, instance=ticket)
         if form.is_valid():
-            ticket = form.save()
+            ticket = form.save(commit=False)
+            ticket.created_by = request.user.username
+            ticket.save()
             return redirect(ticket_detail, ticket.pk)
     else:
         form = TicketForm(instance=ticket)
@@ -49,6 +52,8 @@ def upvote(request, pk):
         return redirect(ticket_detail, ticket.pk )
     else:
         return redirect(all_tickets)
+    
+
 
 
 

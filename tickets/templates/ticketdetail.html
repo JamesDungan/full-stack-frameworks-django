@@ -5,67 +5,68 @@
 
 {% block content %}
 {% user_voted_tag ticket user.username as voted %}
-    <div class="row">
-        <div class="ticket-title col-md-2 col-sm-3 text-center">
-            <p>{{ticket.title}}</p>
-        </div>
-        <div class="ticket-created_date col-md-2 col-sm-3 text-center">
-            <p>{{ticket.created_date}}</p>
-        </div>
-        <div class="ticket-created_by col-md-2 col-sm-3 text-center">
-            <p>{{ticket.created_by}}</p>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <h3 class="card-header">{{ ticket.title }}</h3>
+            <div calss="card-body">
+                <p class="ticket-description card-text">{{ ticket.text }}</p>
+                <p>{{ticket.created_date}}</p>
+                <p>{{ticket.created_by}}</p>
+            </div>
+            <div class="card-footer footer-grid">
+                    {% if voted %}    
+                        <a href="" class="btn btn-outline-success btn-sm disabled ticket-footer-link">Upvote <span class="glyphicon glyphicon-chevron-up"></span></a>
+                    {% else %}
+                        <a href="{% url 'upvote_ticket' ticket.id %}"class="btn btn-sm btn-outline-success ticket-footer-link">Upvote <span class="glyphicon glyphicon-chevron-up"></span></a>
+                    {% endif %}
+                    <p class="ticket-footer-label ">Votes:</p> <p class="ticket-footer-info">{{ ticket.votes }}</p>
+                    <p class="ticket-footer-label">Type:</p> <p class="ticket-footer-info">{{ ticket.ticket_type }}</p>
+                    <p class="ticket-footer-label">Status:</p> <p class="ticket-footer-info">{{ ticket.status }}</p>
+            </div>
         </div>
     </div>
-
-    <div class="row">
-        <div class="ticket-text col-sm-12 text-center">
-            <p>{{ticket.text}}</p>
-        </div>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <a href="{% url 'tickets' %}" class="btn btn-default">Back to Tickets</a>
     </div>
-    <div class="row">
-        <div class="col-xs-9">
-            <p><span class="boldtext">Votes: </span>{{ ticket.votes }}</p>
-            {% if voted %}    
-                <a href="" class="btn btn-default btn-sm upvote disabled">Upvote</a>
-            {% else %}
-                <a href="{% url 'upvote_ticket' ticket.id %}"class="btn btn-default btn-sm upvote">Upvote</a>
-            {% endif %}
-            
-            <p><span class="boldtext">Type: </span>{{ ticket.ticket_type }}</p>
-            <p><span class="boldtext">Status: </span>{{ ticket.status }}</p>
+    <div class="col-sm-6">
+        <a href="{% url 'edit_ticket' ticket.id %}" class="btn btn-default">Edit this Ticket</a>
+    </div>
+</div>
+<div class="row">
+    <div class="form-group col-sm-8">
+        <form role="form" method="post" id="comment-form" action="{% url 'ticket_detail' ticket.id %}">
+        {% csrf_token %}
+        {{ form | as_bootstrap }}
+        <input class=" btn btn-primary" id="make_comment_btn" name="comment" type="submit" value="Comment">
+        </form>
+    </div>
+</div>
 
-
-            <a href="{% url 'tickets' %}" class="btn btn-default">Back to Tickets</a>
-            <hr>
-            <a href="{% url 'edit_ticket' ticket.id %}" class="btn btn-default">Edit this Ticket</a>
-            <hr>
-        </div>
-        <div class="col-xs-9">
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
             {% if ticket.comment_set.all %}
-                <h2>Comments</h2>
+                <h3 class="card-header">Comments</h3>
                 <div class="comments">
                     {% for comment in ticket.comment_set.all %}
-                        <span>
-                            <p>{{ comment.author }} said on {{ comment.created_date }}</p>
-                        </span>
-                        <p>
+                        
+                        <h5 class="card-title">
+                            {{ comment.author }} said on {{ comment.created_date }}
+                        </h5>
+                        <p class="card-text">
                             {{ comment.text }}
                         </p>
+
                     {% endfor %}
                 </div>
             {% endif %}
         </div>
     </div>
-    <div class="row">
-        <form role="form" method="post" id="payment-form" action="{% url 'ticket_detail' ticket.id %}">
-        <div class="form-group col-md-6">
-            {{ form | as_bootstrap }}
-        </div>    
-            {% csrf_token %}
-        <div class="form-group col-md-12">
-            <input class=" btn btn-primary" id="submit_payment_btn" name="comment" type="submit" value="Comment">
-        </div>
-        </form>
-    </div>
+</div>
+
 
 {% endblock %}

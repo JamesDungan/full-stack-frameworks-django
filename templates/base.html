@@ -21,8 +21,7 @@
                     {% if user.is_authenticated %}
                         <li class="nav-item"><a  class="nav-link" href="{% url 'tickets' %}">Tickets</a></li>
                         <li class="nav-item"><a  class="nav-link" href="{% url 'get_posts' %}">Blog</a></li>
-                        <li class="nav-item"><a  class="nav-link" href="{% url 'logout' %}">Logout</a></li>
-                        <li class="nav-item"><a  class="nav-link" href="{% url 'user_profile' %}">Profile</a></li>                       
+                        <li class="nav-item"><a  class="nav-link" href="{% url 'logout' %}">Logout</a></li>                     
                     {% else %}
                         <li class="nav-item"><a  class="nav-link" href="{% url 'login' %}">Login</a></li>
                         <li class="nav-item"><a  class="nav-link" href="{% url 'registration' %}">Register</a></li>
@@ -30,9 +29,6 @@
                 </ul>
             </div>
         </nav>
-        <h1>
-            {% block page_heading %}{% endblock %}
-        </h1>
         {% if messages %}
         <div>
             {% for message in messages %}
@@ -40,8 +36,10 @@
             {% endfor %}
         </div>
         {% endif %}
-
-        {% block content %}{% endblock %}
+        <div class = "container">
+            {% block content %}{% endblock %}
+        </div>
+        
         <footer>
             <div class="container">
                 <p>Made by James Dungan 2019</p>
