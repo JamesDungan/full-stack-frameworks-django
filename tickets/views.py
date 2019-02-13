@@ -24,6 +24,8 @@ def ticket_detail(request, pk):
 
 def create_or_edit_ticket(request, pk=None):
     ticket = get_object_or_404(Ticket, pk=pk) if pk else None
+    if request.user.username != ticket.created_by:
+        return redirect(ticket_detail, ticket.pk)
     if request.method == "POST":
         form = TicketForm(request.POST, instance=ticket)
         if form.is_valid():

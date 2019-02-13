@@ -6,34 +6,43 @@
 {% block content %}
 {% user_voted_tag ticket user.username as voted %}
 
+{% ticket_owner_tag ticket user.username as owner %}
+
+<div class="heading row">
+    <div class="col-sm-12">
+        <h2 class="text-center">{{ ticket.title }}</h2>
+    </div>
+</div>
 <div class="row">
     <div class="col-sm-12">
-        <div class="card">
-            <h3 class="card-header">{{ ticket.title }}</h3>
-            <div calss="card-body">
+        <div class="card ticket-detail">
+            <div calss="card-body ticket-grid">
                 <p class="ticket-description card-text">{{ ticket.text }}</p>
                 <p>{{ticket.created_date}}</p>
-                <p>{{ticket.created_by}}</p>
+                <p><span>Created By: </span>{{ticket.created_by}}</p>
+                {% if voted %}    
+                    <a href="" class="btn btn-outline-success btn-sm disabled ticket-footer-link">Upvote <span class="glyphicon glyphicon-chevron-up"></span></a>
+                {% else %}
+                    <a href="{% url 'upvote_ticket' ticket.id %}"class="btn btn-sm btn-outline-success ticket-footer-link">Upvote <span class="glyphicon glyphicon-chevron-up"></span></a>
+            {% endif %}
             </div>
             <div class="card-footer footer-grid">
-                    {% if voted %}    
-                        <a href="" class="btn btn-outline-success btn-sm disabled ticket-footer-link">Upvote <span class="glyphicon glyphicon-chevron-up"></span></a>
-                    {% else %}
-                        <a href="{% url 'upvote_ticket' ticket.id %}"class="btn btn-sm btn-outline-success ticket-footer-link">Upvote <span class="glyphicon glyphicon-chevron-up"></span></a>
-                    {% endif %}
-                    <p class="ticket-footer-label ">Votes:</p> <p class="ticket-footer-info">{{ ticket.votes }}</p>
-                    <p class="ticket-footer-label">Type:</p> <p class="ticket-footer-info">{{ ticket.ticket_type }}</p>
-                    <p class="ticket-footer-label">Status:</p> <p class="ticket-footer-info">{{ ticket.status }}</p>
+
+                <p class="ticket-footer-label ">Votes:</p> <p class="ticket-footer-info">{{ ticket.votes }}</p>
+                <p class="ticket-footer-label">Type:</p> <p class="ticket-footer-info">{{ ticket.ticket_type }}</p>
+                <p class="ticket-footer-label">Status:</p> <p class="ticket-footer-info">{{ ticket.status }}</p>
+                {% if owner %}
+                    <a href="{% url 'edit_ticket' ticket.id %}" class="btn ticket-button btn-default">Edit this Ticket</a>
+                {% else %}
+                    <a href="" class="btn ticket-button btn-default disabled">Edit this Ticket</a>
+                {% endif %}
             </div>
         </div>
     </div>
 </div>
 <div class="row">
     <div class="col-sm-6">
-        <a href="{% url 'tickets' %}" class="btn btn-default">Back to Tickets</a>
-    </div>
-    <div class="col-sm-6">
-        <a href="{% url 'edit_ticket' ticket.id %}" class="btn btn-default">Edit this Ticket</a>
+        <a href="{% url 'tickets' %}" class="btn ticket-button btn-default">Back to Tickets</a>
     </div>
 </div>
 <div class="row">
@@ -41,7 +50,7 @@
         <form role="form" method="post" id="comment-form" action="{% url 'ticket_detail' ticket.id %}">
         {% csrf_token %}
         {{ form | as_bootstrap }}
-        <input class=" btn btn-primary" id="make_comment_btn" name="comment" type="submit" value="Comment">
+        <input class=" btn comment-button btn-primary" id="make_comment_btn" name="comment" type="submit" value="Comment">
         </form>
     </div>
 </div>

@@ -2,26 +2,40 @@
 {% load app_tags %}
 
 {% block content %}
+<div class="heading row">
+    <div class="col-sm-12">
+        <h2 class="text-center">Tickets</h2>
+    </div>
+</div>
 <div class="row">
 {% for ticket in tickets %}
 {% user_voted_tag ticket user.username as voted %}
     <div class="col-sm-12 col-md-6 col-lg-3">
-        <div class="card">
+        <div class="card ticket-card">
             <h3 class="card-header">{{ ticket.title }}</h3>
-            <div class="card-body">
+            <div class="card-body tickets-grid">
                 <p class="ticket-description card-text">{{ ticket.text | truncatewords:15 }}</p>
-                <a href="{% url 'ticket_detail' ticket.id %}" class=" card-link btn btn-sm btn-outline-primary read-more" id="new_ticket_btn" name="ticket_detail">Read More</a>
-            </div>
-            <div class="card-footer footer-grid">
+                
+                <div  class="read-button-container">
+                    <a href="{% url 'ticket_detail' ticket.id %}" class=" card-link btn btn-sm btn-outline-primary read-more" id="new_ticket_btn" name="ticket_detail">Read More</a>
+                </div>
+                <div  class="vote-button-container">    
                     {% if voted %}    
-                        <a href="" class="btn btn-outline-success btn-sm disabled ticket-footer-link">Upvote <span class="glyphicon glyphicon-chevron-up"></span></a>
+                        <a href="" class="btn btn-outline-success btn-sm disabled ticket-link">Upvote <span class="glyphicon glyphicon-chevron-up"></span></a>
                     {% else %}
                         <a href="{% url 'upvote_ticket' ticket.id %}"class="btn btn-sm btn-outline-success ticket-footer-link">Upvote <span class="glyphicon glyphicon-chevron-up"></span></a>
                     {% endif %}
-                    <p class="ticket-footer-label ">Votes:</p> <p class="ticket-footer-info">{{ ticket.votes }}</p>
-                    <p class="ticket-footer-label">Type:</p> <p class="ticket-footer-info">{{ ticket.ticket_type }}</p>
-                    <p class="ticket-footer-label">Status:</p> <p class="ticket-footer-info">{{ ticket.status }}</p>
-            </div>
+                </div>
+
+                <div class="vote-container">
+                    <span class="ticket-label ">Votes:</span> <span class="ticket-info">{{ ticket.votes }}</span>
+                </div>
+                <div class="type-container">
+                    <span class="ticket-label">Type:</span> <span class="ticket-info">{{ ticket.ticket_type }}</span>                    
+                </div>
+                
+                
+            </div>           
         </div>
     </div>
     {% endfor %}

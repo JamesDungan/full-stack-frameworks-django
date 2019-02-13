@@ -14,3 +14,10 @@ def user_voted_tag(ticket, user):
         return True
     else:
         return False
+
+@register.simple_tag
+def ticket_owner_tag(ticket, user):
+    if ticket.created_by == user:
+        return True
+    else:
+        return False

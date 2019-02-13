@@ -1,8 +1,18 @@
 {% extends 'base.html' %}
 {% block page_title %}Home{% endblock %}
 {% block content %}
-<div class="jumbotron">
-    <h1>About</h1>
-    <p>Welcome to the amazing issue tracking application!</p>
+<div class="jumbotron welcome" >
+    <h3>Issue Tracking App!</h3>
+    <div class="welcome-paragraphs card">
+        <p>This portal is a support center for the imaginary <strong>BUZZ</strong> application</p>
+        <p>Here you can log-in to view and submit tickets relating to <strong>BUZZ</strong>.</p> 
+        <p>Tickets can either be for Bug fixes or Feature requests. Both of which can be voted 
+            on to increase their ranking.</p>
+        <p>To vote on a Bug is free, but to vote on a feature you must pay a fee of <strong>€5</strong>.
+             We promise to spend at least <strong>50%</strong> of our time working on the highest ranking feature request</p>
+        <p>We also have a blog which is updated regularly with interesting articles related to the <strong>BUZZ</strong></p>
+    </div>
+    <details>This app was created by James Dungan as a project for the Code Institute Full Stack Web Development Higher Diploma - all details are purely ficticious (incase you were wondering) ;-) </details>
+    
 </div>
 {% endblock %}

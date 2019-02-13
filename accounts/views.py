@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 def login(request):
     if request.user.is_authenticated:
-        return redirect(reverse('index'))
+        return redirect(reverse('tickets'))
     if request.method == "POST":
         login_form = UserLoginForm(request.POST)
         if login_form.is_valid():
@@ -15,7 +15,7 @@ def login(request):
             if user:
                 auth.login(user=user, request=request)
                 messages.success(request, "You have logged in successfully")
-                return redirect(reverse('index'))
+                return redirect(reverse('tickets'))
             else:
                 login_form.add_error(None, "Your username or password is incorrect")
     else:
@@ -30,7 +30,7 @@ def logout(request):
 
 def registration(request):
     if request.user.is_authenticated:
-        return redirect(reverse('index'))
+        return redirect(reverse('tickets'))
    
     if request.method == "POST":
         registration_form = UserRegistrationForm(request.POST)
@@ -43,7 +43,7 @@ def registration(request):
             if user:
                 auth.login(user=user, request=request)
                 messages.success(request, "You have registered successfully")
-                return redirect(reverse('index'))
+                return redirect(reverse('tickets'))
             else:
                 messages.error(request, "Unable to register your details at this time")
     else:
