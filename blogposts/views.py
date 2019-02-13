@@ -19,7 +19,9 @@ def post_detail(request, pk):
 def create_or_edit_post(request, pk=None):
 
     post = get_object_or_404(Post, pk=pk) if pk else None
-
+    if post is not None:
+        if request.user.username != post.author:
+            return redirect(post_detail, post.pk)
     if request.method == "POST":
         form = BlogPostForm(request.POST, instance=post)
         if form.is_valid():
