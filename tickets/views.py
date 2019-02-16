@@ -3,12 +3,14 @@ from .models import Ticket, Comment
 from payments.views import payments
 from .forms import TicketForm, CommentForm
 from services import vote_service
+from django.contrib.auth.decorators import login_required
 
-
+@login_required
 def all_tickets(request):
     tickets = Ticket.objects.all()
     return render(request, "tickets.html", {"tickets": tickets})
 
+@login_required
 def ticket_detail(request, pk):
     ticket = get_object_or_404(Ticket, pk=pk)
     if request.method == 'POST':
@@ -22,6 +24,7 @@ def ticket_detail(request, pk):
         form = CommentForm()
     return render(request, 'ticketdetail.html', {'ticket': ticket, 'form':form})
 
+@login_required
 def create_or_edit_ticket(request, pk=None):
     ticket = get_object_or_404(Ticket, pk=pk) if pk else None
     if ticket is not None:
@@ -38,6 +41,7 @@ def create_or_edit_ticket(request, pk=None):
         form = TicketForm(instance=ticket)
     return render(request, 'ticketform.html', {'form': form})  
 
+@login_required
 def upvote(request, pk):
     referring_page = request.META['HTTP_REFERER']
     path_list = referring_page.split('/')
