@@ -2,6 +2,7 @@ from django.test import TestCase, Client, SimpleTestCase
 from .models import Post
 from django.contrib.auth.models import User
 from pprint import pprint
+from urllib.parse import urlencode
 
 class BlogpostTests(TestCase):
     def setUp(self):
@@ -37,11 +38,25 @@ class BlogpostTests(TestCase):
         self.assertEqual(response.status_code, 200)        
         self.assertTemplateUsed(response=response, template_name='blogpostform.html')
 
-        response = self.client.post('/posts/new/')
-        pprint(vars(response))
-    
+        data = urlencode({"title":"test", "content":"content", "tag":"tag"})
+        response = self.client.post('/posts/new/', data, content_type="application/x-www-form-urlencoded", follow=True)
+        self.assertContains(response, '<p><span class="boldtext">Author:</span>', status_code=200)
+
     def test_create_post_non_staff(self):
         self.client.login(username='user1', password='1234')
         response = self.client.get('/posts/new/', follow=True)
         self.assertContains(response, '<h2 class="text-center">Tickets</h2>', status_code=200)
 
+    def test_edit_post_staff(self):
+        self.client.login(username='test_author_1', password='1234')
+        response = self.client.get('/posts/1/edit/')
+        self.assertEqual(response.status_code, 200)        
+        self.assertTemplateUsed(response=response, template_name='blogpostform.html')
+        data = urlencode({"title":"test", "content":"content", "tag":"tag"})
+        response = self.client.post('/posts/1/edit/', data, content_type="application/x-www-form-urlencoded", follow=True)
+        self.assertContains(response, '<p><span class="boldtext">Author:</span>', status_code=200)
+    
+    def test_edit_post_non_staff(self):
+        self.client.login(username='user1', password='1234')
+        response = self.client.get('/posts/1/edit/', follow=True)
+        self.assertContains(response, '<h2 class="text-center">Tickets</h2>', status_code=200)
