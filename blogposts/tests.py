@@ -1,7 +1,6 @@
-from django.test import TestCase, Client, SimpleTestCase
-from .models import Post
+from django.test import TestCase, Client
+from blogposts.models import Post
 from django.contrib.auth.models import User
-from pprint import pprint
 from urllib.parse import urlencode
 
 class BlogpostTests(TestCase):

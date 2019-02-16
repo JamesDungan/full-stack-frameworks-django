@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def all_tickets(request):
-    tickets = Ticket.objects.all()
+    tickets = Ticket.objects.all().order_by('-votes')
     return render(request, "tickets.html", {"tickets": tickets})
 
 @login_required
