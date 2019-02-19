@@ -86,6 +86,7 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'IssueTracker.wsgi.application'
 
 
