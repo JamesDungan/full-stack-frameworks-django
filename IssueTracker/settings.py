@@ -14,6 +14,7 @@ import os
 # from dotenv import load_dotenv
 import psycopg2
 import dj_database_url
+import whitenoise
 
 DATABASE_URL = os.environ['DATABASE_URL']
 conn = psycopg2.connect(DATABASE_URL, sslmode='require')
