@@ -1,1 +1,1 @@
-web: gunicorn IssueTracker.wsgi:application --preload
+web: gunicorn IssueTracker.wsgi:application
