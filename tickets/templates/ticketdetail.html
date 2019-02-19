@@ -6,7 +6,8 @@
 {% block content %}
 {% user_voted_tag ticket user.username as voted %}
 
-{% load static %} 
+{% load static from staticfiles %}
+
 {% ticket_owner_tag ticket user.username as owner %}
 
 <div class="heading row">
