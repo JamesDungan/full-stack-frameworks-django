@@ -1,1 +1,1 @@
-web: gunicorn IssueTracker.wsgi:application
+web: gunicorn IssueTracker.wsgi:application --log-file - --log-level debug
