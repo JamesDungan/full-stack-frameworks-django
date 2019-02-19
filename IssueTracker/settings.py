@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 import psycopg2
 import dj_database_url
 
@@ -20,8 +20,8 @@ conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
 # WHITENOISE_USE_FINDERS = True
 
-dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
-load_dotenv(dotenv_path)
+# dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+# load_dotenv(dotenv_path)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
