@@ -4,9 +4,9 @@
 {% block content %}
 
     {% if form.title.value is None %}
-        <h3>New Post</h3>
+        <h3 class="new-post-header">New Post</h3>
     {% endif %}
-    <form method="POST" enctype="multipart/form-data">
+    <form class="_form" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form | as_bootstrap }}
         <button tye="submit" class="btn btn-info">Save</button>
