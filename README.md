@@ -74,27 +74,28 @@ The home app serves the index page.
 Testing has been automated using the django.test library. 
 Each app has its own test.py module within which the test cases were constructed. 
 
-To run these tests run this command from your terminal when at the root of the project: `python3 -m unittest`
+To run these tests run this command from your terminal when at the root of the project: `python3 manage.py test`
 
 
 ## Deployment
 
 ### Heroku
 
-The site was deployed to Heroku via new branch (production) which was based on the master branch. Environment variables used for the database were replaced with corresponding config vars.
+The site was deployed to Heroku via new branch (production) which was based on the master branch. Environment variables used for the database were replaced with corresponding config vars. A PostgreSQL instance was activated in heroku and Psycopg2 & dj_database_url were installed and added to requirements to interact with this. `STATIC_ROOT = os.path.join(BASE_DIR, 'live-static')` was added to the settings file to facilitate the collection of staticfiles in one location at deployment. 
+Whitenoise was installed to serve the static files and gunicorn was installed as the HTTP production server. Finally a Procfile was created for gunicorn which points to the app itself `web: gunicorn IssueTracker.wsgi:application` 
 
 ### Locally
 
 If you would like to run this code locally, follow these instructions:
 
 1. Clone the repository 
-  * (with ssh) `git clone git@github.com:JamesDungan/code-institute-data-centric.git` 
-  * (with https) `https://github.com/JamesDungan/code-institute-data-centric.git`
+  * (with ssh) `git@github.com:JamesDungan/full-stack-frameworks-django.git` 
+  * (with https) `https://github.com/JamesDungan/full-stack-frameworks-django.git`
 2. Open the folder in your favorite IDE
 3. Install [python3](https://www.python.org/downloads/) on your machine 
-4. Open a terminal and from the root of this project create a virtual environment where you will install all of your dependancies
+4. Open a terminal and from the root of this project create a virtual environment where you will install all of your dependencies
 5. Then activate the virtual environment and run `pip install -r requirements.txt` from the root of the project.
-6. You will have to replace MONGODB_URI, DBS_NAME and COLLECTION_NAME in database.py with your own database credentials.     
-6. Now that all of your dependancies have been installed you can run the app by running `python3 rest-server`
+6. You will have to create a local .env file to store the following variables: `EMAIL_ADDRESS= EMAIL_PASSWORD= STRIPE_SECRET_KEY= STRIPE_PUBLISHABLE_KEY=`   
+6. Now that all of your dependancies have been installed you can run the app by running `python3 manage.py runserver`
 
 
