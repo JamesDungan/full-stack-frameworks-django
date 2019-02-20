@@ -1,81 +1,102 @@
 # full-stack-frameworks-django
 
-One or two paragraphs providing an overview of your project.
+[Issue Tracker](https://full-stack-frameworks-django.herokuapp.com/) is a Django web application developed as part of the Code Institute Full Stack Software Development Diploma - FULL STACK FRAMEWORKS DJANGO module. 
 
-Essentially, this part is your sales pitch.
+### What is this site for?
  
-## UX
+ This portal is a support center for the imaginary BUZZ application (the App). It facilitates the resolution of bugs and the implementation of new feature requests for the App. When logged in, a user may view the list of tickets (BUGS or FEATURES), view a single ticket's page to get more information, vote on a ticket (each user can only vote once per ticket) and edit tickets (users may only edit tickets which they created). When voting on tickets, users are charged 5 Euro to vote on a Feature. Voting on bugs is free.
+ The promise is that the developers will spend at least 50% of their time working on the highest ranking feature.
+ In addition to the ticket system there is also a blog which is maintained and updated by staff. The Blog is readonly for non-staff users. Blog posts can only be edited by their original author.
+
  
-Use this section to provide insight into your UX process, focusing on who this website is for, what it is that they want to achieve and how your project is the best way to help them achieve these things.
-
-In particular, as part of this section we recommend that you provide a list of User Stories, with the following general structure:
-- As a user type, I want to perform an action, so that I can achieve a goal.
-
-This section is also where you would share links to any wireframes, mockups, diagrams etc. that you created as part of the design process. These files should themselves either be included in the project itself (in an separate directory), or just hosted elsewhere online and can be in any format that is viewable inside the browser.
-
-## Features
-
-In this section, you should go over the different parts of your project, and describe each in a sentence or so.
+### How does it work
  
-### Existing Features
-- Feature 1 - allows users X to achieve Y, by having them fill out Z
-- ...
+The site is divided into multiple django apps. One for each logical function/section. Django uses the Model View Controller (MVC) Architecture pattern. The model (model.py) represents the data in a database, the views (html templates styled with css) display the data in the client and the controller (view.py) is the middleman that allows communication between the two. Each app has its own self contained MVC implementation.
 
-For some/all of your features, you may choose to reference the specific project files that implement them, although this is entirely optional.
+#### accounts
 
-In addition, you may also use this section to discuss plans for additional features to be implemented in the future:
+The accounts app looks after user authentication and makes use of the powerful built in django authentication `django.contrib.auth` module. 
 
-### Features Left to Implement
-- Another feature idea
+#### blogposts
+
+The blogposts app manages the blog section of the project. Its controller is responsible for retrieving blogpost data and updating the blogpost model with new or edited blog posts. Each of the functions are preceded by the `@login_required` decorator. The Model here contains a class representing the Post entity and the view is comprised of three html templates.
+
+#### payments
+
+The payments app manages the payments side of things. Users are redirected to the payments view function when voting on a 'Feature' ticket. Then from here the charge view function is used to make a payment using the stripe API. When the charge is processed the `vote_service` is triggered to actually register the vote.
+
+#### vote_service
+
+In the services folder you will find the vote_service module. This will register a vote on a ticket in the database and was abstracted out as a service because the voting functionality is used by both the ticket app and the payments app.
+
+#### tickets
+
+The tickets app manages the tickets in the project. The views.py file has four functions: all_tickets; ticket_detail; create_or_edit_ticket; upvote_ticket; which retrieve a list of tickets, retrieve individual tickets by id, create or edit tickets and upvote tickets respectively. Like the in blogposts app each of these functions is protected by the `@login_required` decorator and the create/edit function includes logic which only allows ticket owners to edit their own tickets. 
+Further to this two custom template tags were created to check if a user already voted on a particular ticket and to check if a user owns a ticket and if so the template logic will disable the upvote and edit buttons for that ticket respectively. 
+
+#### home
+
+The home app serves the index page.
+
 
 ## Technologies Used
 
-In this section, you should mention all of the languages, frameworks, libraries, and any other tools that you have used to construct this project. For each, provide its name, a link to its official site and a short sentence of why it was used.
+- [Django](https://www.djangoproject.com/)
+    - **Django** was used as the web framework for this project. This is an opinionated framework which comes with 'batterise included' and facilitates rapid application development.
 
-- [JQuery](https://jquery.com)
-    - The project uses **JQuery** to simplify DOM manipulation.
+- [SQLite](https://www.sqlite.org/index.html)
+    - **SQLite** comes as standard with django and was used during the development phase as the primary database for this project.
+
+- [python-dotenv](https://pypi.org/project/python-dotenv/)
+    - The **python-dotenv** package was used to set environment variables from a local .env file during development.
+
+- [stripe](https://stripe.com/ie)
+    The **stripe** payments platform was used to facilitate online payments.
+
+- [PostgreSQL](https://www.postgresql.org/)
+    - The project database was switched to **PostgreSQL** when moving to the production environment. This is the preferred database system when deploying apps to [Heroku](https://www.heroku.com/)
+
+- [Psycopg2](http://initd.org/psycopg/)
+    - **Psycopg** was used as a PostgreSQL adapter when the application was moved to the production environment.
+
+- [dj_database_url](https://pypi.org/project/dj-database-url/)
+    - **dj_database_url** is a package which facilitates the use of the DATABASE_URL environment variable to configure a Django application.
+
+- [Whitenoise](http://whitenoise.evans.io/en/stable/)
+    - **Whitenoise** was utilised to serve the application's static files once it was deployed to [Heroku](https://www.heroku.com/)
+
+- [gunicorn](https://gunicorn.org/)
+    - In the production environment **Gunicorn** was used as the WSGI HTTP Server.
 
 
 ## Testing
 
-In this section, you need to convince the assessor that you have conducted enough testing to legitimately believe that the site works well. Essentially, in this part you will want to go over all of your user stories from the UX section and ensure that they all work as intended, with the project providing an easy and straightforward way for the users to achieve their goals.
+Testing has been automated using the django.test library. 
+Each app has its own test.py module within which the test cases were constructed. 
 
-Whenever it is feasible, prefer to automate your tests, and if you've done so, provide a brief explanation of your approach, link to the test file(s) and explain how to run them.
+To run these tests run this command from your terminal when at the root of the project: `python3 manage.py test`
 
-For any scenarios that have not been automated, test the user stories manually and provide as much detail as is relevant. A particularly useful form for describing your testing process is via scenarios, such as:
-
-1. Contact form:
-    1. Go to the "Contact Us" page
-    2. Try to submit the empty form and verify that an error message about the required fields appears
-    3. Try to submit the form with an invalid email address and verify that a relevant error message appears
-    4. Try to submit the form with all inputs valid and verify that a success message appears.
-
-In addition, you should mention in this section how your project looks and works on different browsers and screen sizes.
-
-You should also mention in this section any interesting bugs or problems you discovered during your testing, even if you haven't addressed them yet.
-
-If this section grows too long, you may want to split it off into a separate file and link to it from here.
 
 ## Deployment
 
-This section should describe the process you went through to deploy the project to a hosting platform (e.g. GitHub Pages or Heroku).
+### Heroku
 
-In particular, you should provide all details of the differences between the deployed version and the development version, if any, including:
-- Different values for environment variables (Heroku Config Vars)?
-- Different configuration files?
-- Separate git branch?
+The site was deployed to Heroku via new branch (production) which was based on the master branch. Environment variables used for the database were replaced with corresponding config vars. A PostgreSQL instance was activated in heroku and Psycopg2 & dj_database_url were installed and added to requirements to interact with this. `STATIC_ROOT = os.path.join(BASE_DIR, 'live-static')` was added to the settings file to facilitate the collection of staticfiles in one location at deployment. 
+Whitenoise was installed to serve the static files and gunicorn was installed as the HTTP production server. Finally a Procfile was created for gunicorn which points to the app itself `web: gunicorn IssueTracker.wsgi:application` 
 
-In addition, if it is not obvious, you should also describe how to run your code locally.
+### Locally
+
+If you would like to run this code locally, follow these instructions:
+
+1. Clone the repository 
+  * (with ssh) `git@github.com:JamesDungan/full-stack-frameworks-django.git` 
+  * (with https) `https://github.com/JamesDungan/full-stack-frameworks-django.git`
+2. Open the folder in your favorite IDE
+3. Install [python3](https://www.python.org/downloads/) on your machine 
+4. Open a terminal and from the root of this project create a virtual environment where you will install all of your dependencies
+5. Then activate the virtual environment and run `pip install -r requirements.txt` from the root of the project.
+6. You will have to create a local .env file to store the following variables: `EMAIL_ADDRESS= EMAIL_PASSWORD= STRIPE_SECRET_KEY= STRIPE_PUBLISHABLE_KEY=`   
+6. Now that all of your dependancies have been installed you can run the app by running `python3 manage.py runserver`
 
 
-## Credits
 
-### Content
-- The text for section Y was copied from the [Wikipedia article Z](https://en.wikipedia.org/wiki/Z)
-
-### Media
-- The photos used in this site were obtained from ...
-
-### Acknowledgements
-
-- I received inspiration for this project from X
