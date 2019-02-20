@@ -1,6 +1,6 @@
 # full-stack-frameworks-django
 
-[Issue Tracker](https://full-stack-frameworks-django.herokuapp.com/) is a [Django](https://www.djangoproject.com/) web application developed as part of the Code Institute Full Stack Software Development Diploma - FULL STACK FRAMEWORKS DJANGO module. 
+[Issue Tracker](https://full-stack-frameworks-django.herokuapp.com/) is a Django web application developed as part of the Code Institute Full Stack Software Development Diploma - FULL STACK FRAMEWORKS DJANGO module. 
 
 ### What is this site for?
  
@@ -41,15 +41,41 @@ The home app serves the index page.
 
 ## Technologies Used
 
+- [Django](https://www.djangoproject.com/)
+    - **Django** was used as the web framework for this project. This is an opinionated framework which comes with 'batterise included' and facilitates rapid application development.
+
+- [SQLite](https://www.sqlite.org/index.html)
+    - **SQLite** comes as standard with django and was used during the development phase as the primary database for this project.
+
+- [python-dotenv](https://pypi.org/project/python-dotenv/)
+    - The **python-dotenv** package was used to set environment variables from a local .env file during development.
+
+- [stripe](https://stripe.com/ie)
+    The **stripe** payments platform was used to facilitate online payments.
+
+- [PostgreSQL](https://www.postgresql.org/)
+    - The project database was switched to **PostgreSQL** when moving to the production environment. This is the preferred database system when deploying apps to [Heroku](https://www.heroku.com/)
+
+- [Psycopg2](http://initd.org/psycopg/)
+    - **Psycopg** was used as a PostgreSQL adapter when the application was moved to the production environment.
+
+- [dj_database_url](https://pypi.org/project/dj-database-url/)
+    - **dj_database_url** is a package which facilitates the use of the DATABASE_URL environment variable to configure a Django application.
+
+- [Whitenoise](http://whitenoise.evans.io/en/stable/)
+    - **Whitenoise** was utilised to serve the application's static files once it was deployed to [Heroku](https://www.heroku.com/)
+
+- [gunicorn](https://gunicorn.org/)
+    - In the production environment **Gunicorn** was used as the WSGI HTTP Server.
 
 
 ## Testing
 
-Testing has been automated using the python unittest library. A testcase was created for each server class (Recipe & RecipeList) with individual functions testing the endpoints. mock.Patch was used to mock calls to the database module. Tests are contained in [test_rest_server.py](https://github.com/JamesDungan/code-institute-data-centric/blob/production/test_rest_server.py)
+Testing has been automated using the django.test library. 
+Each app has its own test.py module within which the test cases were constructed. 
 
 To run these tests run this command from your terminal when at the root of the project: `python3 -m unittest`
 
-**Please note** You will need to replace MONGODB_URI, DBS_NAME and COLLECTION_NAME in database.py with your own database credentials for this to work. 
 
 ## Deployment
 
