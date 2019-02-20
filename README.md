@@ -1,81 +1,74 @@
 # full-stack-frameworks-django
 
-One or two paragraphs providing an overview of your project.
+[Issue Tracker](https://full-stack-frameworks-django.herokuapp.com/) is a [Django](https://www.djangoproject.com/) web application developed as part of the Code Institute Full Stack Software Development Diploma - FULL STACK FRAMEWORKS DJANGO module. 
 
-Essentially, this part is your sales pitch.
+### What is this site for?
  
-## UX
+ This portal is a support center for the imaginary BUZZ application (the App). It facilitates the resolution of bugs and the implementation of new feature requests for the App. When logged in, a user may view the list of tickets (BUGS or FEATURES), view a single ticket's page to get more information, vote on a ticket (each user can only vote once per ticket) and edit tickets (users may only edit tickets which they created). When voting on tickets, users are charged 5 Euro to vote on a Feature. Voting on bugs is free.
+ The promise is that the developers will spend at least 50% of their time working on the highest ranking feature.
+ In addition to the ticket system there is also a blog which is maintained and updated by staff. The Blog is readonly for non-staff users. Blog posts can only be edited by their original author.
+
  
-Use this section to provide insight into your UX process, focusing on who this website is for, what it is that they want to achieve and how your project is the best way to help them achieve these things.
-
-In particular, as part of this section we recommend that you provide a list of User Stories, with the following general structure:
-- As a user type, I want to perform an action, so that I can achieve a goal.
-
-This section is also where you would share links to any wireframes, mockups, diagrams etc. that you created as part of the design process. These files should themselves either be included in the project itself (in an separate directory), or just hosted elsewhere online and can be in any format that is viewable inside the browser.
-
-## Features
-
-In this section, you should go over the different parts of your project, and describe each in a sentence or so.
+### How does it work
  
-### Existing Features
-- Feature 1 - allows users X to achieve Y, by having them fill out Z
-- ...
+The site is divided into multiple django apps. One for each logical function/section. Django uses the Model View Controller (MVC) Architecture pattern. The model (model.py) represents the data in a database, the views (html templates styled with css) display the data in the client and the controller (view.py) is the middleman that allows communication between the two. Each app has its own self contained MVC implementation.
 
-For some/all of your features, you may choose to reference the specific project files that implement them, although this is entirely optional.
+#### accounts
 
-In addition, you may also use this section to discuss plans for additional features to be implemented in the future:
+The accounts app looks after user authentication and makes use of the powerful built in django authentication `django.contrib.auth` module. 
 
-### Features Left to Implement
-- Another feature idea
+#### blogposts
+
+The blogposts app manages the blog section of the project. Its controller is responsible for retrieving blogpost data and updating the blogpost model with new or edited blog posts. Each of the functions are preceded by the `@login_required` decorator. The Model here contains a class representing the Post entity and the view is comprised of three html templates.
+
+#### payments
+
+The payments app manages the payments side of things. Users are redirected to the payments view function when voting on a 'Feature' ticket. Then from here the charge view function is used to make a payment using the stripe API. When the charge is processed the `vote_service` is triggered to actually register the vote.
+
+#### vote_service
+
+In the services folder you will find the vote_service module. This will register a vote on a ticket in the database and was abstracted out as a service because the voting functionality is used by both the ticket app and the payments app.
+
+#### tickets
+
+The tickets app manages the tickets in the project. The views.py file has four functions: all_tickets; ticket_detail; create_or_edit_ticket; upvote_ticket; which retrieve a list of tickets, retrieve individual tickets by id, create or edit tickets and upvote tickets respectively. Like the in blogposts app each of these functions is protected by the `@login_required` decorator and the create/edit function includes logic which only allows ticket owners to edit their own tickets. 
+Further to this two custom template tags were created to check if a user already voted on a particular ticket and to check if a user owns a ticket and if so the template logic will disable the upvote and edit buttons for that ticket respectively. 
+
+#### home
+
+The home app serves the index page.
+
 
 ## Technologies Used
 
-In this section, you should mention all of the languages, frameworks, libraries, and any other tools that you have used to construct this project. For each, provide its name, a link to its official site and a short sentence of why it was used.
-
-- [JQuery](https://jquery.com)
-    - The project uses **JQuery** to simplify DOM manipulation.
 
 
 ## Testing
 
-In this section, you need to convince the assessor that you have conducted enough testing to legitimately believe that the site works well. Essentially, in this part you will want to go over all of your user stories from the UX section and ensure that they all work as intended, with the project providing an easy and straightforward way for the users to achieve their goals.
+Testing has been automated using the python unittest library. A testcase was created for each server class (Recipe & RecipeList) with individual functions testing the endpoints. mock.Patch was used to mock calls to the database module. Tests are contained in [test_rest_server.py](https://github.com/JamesDungan/code-institute-data-centric/blob/production/test_rest_server.py)
 
-Whenever it is feasible, prefer to automate your tests, and if you've done so, provide a brief explanation of your approach, link to the test file(s) and explain how to run them.
+To run these tests run this command from your terminal when at the root of the project: `python3 -m unittest`
 
-For any scenarios that have not been automated, test the user stories manually and provide as much detail as is relevant. A particularly useful form for describing your testing process is via scenarios, such as:
-
-1. Contact form:
-    1. Go to the "Contact Us" page
-    2. Try to submit the empty form and verify that an error message about the required fields appears
-    3. Try to submit the form with an invalid email address and verify that a relevant error message appears
-    4. Try to submit the form with all inputs valid and verify that a success message appears.
-
-In addition, you should mention in this section how your project looks and works on different browsers and screen sizes.
-
-You should also mention in this section any interesting bugs or problems you discovered during your testing, even if you haven't addressed them yet.
-
-If this section grows too long, you may want to split it off into a separate file and link to it from here.
+**Please note** You will need to replace MONGODB_URI, DBS_NAME and COLLECTION_NAME in database.py with your own database credentials for this to work. 
 
 ## Deployment
 
-This section should describe the process you went through to deploy the project to a hosting platform (e.g. GitHub Pages or Heroku).
+### Heroku
 
-In particular, you should provide all details of the differences between the deployed version and the development version, if any, including:
-- Different values for environment variables (Heroku Config Vars)?
-- Different configuration files?
-- Separate git branch?
+The site was deployed to Heroku via new branch (production) which was based on the master branch. Environment variables used for the database were replaced with corresponding config vars.
 
-In addition, if it is not obvious, you should also describe how to run your code locally.
+### Locally
+
+If you would like to run this code locally, follow these instructions:
+
+1. Clone the repository 
+  * (with ssh) `git clone git@github.com:JamesDungan/code-institute-data-centric.git` 
+  * (with https) `https://github.com/JamesDungan/code-institute-data-centric.git`
+2. Open the folder in your favorite IDE
+3. Install [python3](https://www.python.org/downloads/) on your machine 
+4. Open a terminal and from the root of this project create a virtual environment where you will install all of your dependancies
+5. Then activate the virtual environment and run `pip install -r requirements.txt` from the root of the project.
+6. You will have to replace MONGODB_URI, DBS_NAME and COLLECTION_NAME in database.py with your own database credentials.     
+6. Now that all of your dependancies have been installed you can run the app by running `python3 rest-server`
 
 
-## Credits
-
-### Content
-- The text for section Y was copied from the [Wikipedia article Z](https://en.wikipedia.org/wiki/Z)
-
-### Media
-- The photos used in this site were obtained from ...
-
-### Acknowledgements
-
-- I received inspiration for this project from X
